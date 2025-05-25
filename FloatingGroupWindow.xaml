@@ -1,0 +1,94 @@
+<Window x:Class="DesktopIconManager.FloatingGroupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Group" Height="200" Width="300"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="#66A0E0A0"
+        Topmost="False"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        AllowDrop="True"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        DragEnter="FileItemsControl_DragEnter"
+        DragOver="FileItemsControl_DragOver"
+        Drop="FileItemsControl_Drop">
+    <Window.Resources>
+        <!-- 檔案項目樣式 -->
+        <Style x:Key="FileItemStyle" TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0,4,0,4"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1A000000"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="#3A000000"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- 檔案項目模板 -->
+        <DataTemplate x:Key="FileItemTemplate">
+            <Border Style="{StaticResource FileItemStyle}"
+                    MouseLeftButtonDown="FileItem_MouseLeftButtonDown"
+                    MouseRightButtonDown="FileItem_MouseRightButtonDown">
+                <StackPanel Orientation="Vertical" Width="80">
+                    <Image Source="{Binding Icon}" Width="48" Height="48" 
+                           HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" 
+                             TextAlignment="Center" FontSize="10"
+                             Margin="0,5,0,0"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <Grid AllowDrop="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock x:Name="TitleText" Text="Group A" FontSize="18" Foreground="Black" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        
+        <ScrollViewer Grid.Row="1" Margin="5" AllowDrop="True">
+            <ItemsControl x:Name="FileItemsControl" AllowDrop="True"
+                         Drop="FileItemsControl_Drop"
+                         DragEnter="FileItemsControl_DragEnter"
+                         DragOver="FileItemsControl_DragOver"
+                         MouseRightButtonDown="FileItemsControl_MouseRightButtonDown">
+                <ItemsControl.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="新增檔案" Click="AddFileMenuItem_Click"/>
+                        <Separator/>
+                        <MenuItem Header="貼上" Click="PasteMenuItem_Click"/>
+                    </ContextMenu>
+                </ItemsControl.ContextMenu>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel AllowDrop="True"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource FileItemStyle}"
+                                MouseLeftButtonDown="FileItem_MouseLeftButtonDown"
+                                MouseRightButtonDown="FileItem_MouseRightButtonDown">
+                            <StackPanel Orientation="Vertical" Width="80">
+                                <Image Source="{Binding Icon}" Width="48" Height="48" 
+                                       HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding Name}" TextWrapping="Wrap" 
+                                         TextAlignment="Center" FontSize="10"
+                                         Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Window>

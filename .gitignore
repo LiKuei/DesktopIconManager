@@ -1,0 +1,10 @@
+@"
+bin/
+obj/
+*.exe
+*.pdb
+*.user
+*.db
+*.cache
+*.vs/
+"@ | Set-Content .gitignore
